@@ -8,17 +8,17 @@ import { useAuth } from '../../hooks/useAuth';
 import LoginBannerImg from '../../assets/images/login.svg';
 import LogoImg from '../../assets/images/logo.svg';
 
-import { 
+import {
   Container,
   Content,
-  LoginBanner, 
-  LoginInfo, 
-  Header, 
-  Partner, 
-  Description, 
+  LoginBanner,
+  LoginInfo,
+  Header,
+  Partner,
+  Description,
   SignInButton,
   SignInButtonIcon,
-  SignInButtonText 
+  SignInButtonText
 } from './styles';
 
 export function SignIn() {
@@ -26,8 +26,18 @@ export function SignIn() {
   const theme = useTheme();
 
   // creates a function to handle sign in
+  const handleSignIn = (async () => {
     // try to call and wait signIn
     // if fails, display an Alert with the title "Erro SignIn" and message "Ocorreu um erro ao tentar logar no app"
+    try {
+      await signIn();
+    } catch (error) {
+      Alert.alert(
+        "Erro SignIn",
+        "Ocorreu um erro ao tentar logar no app",
+      );
+    }
+  })
 
   return (
     <Container
@@ -74,10 +84,18 @@ export function SignIn() {
               Otherwise, show "Entrar com Twitch"
             </SignInButtonText>
           </SignInButton> */}
+          <SignInButton onPress={handleSignIn}>
+            <SignInButtonIcon>
+              {isLoggingIn ? <ActivityIndicator size={20} color={theme.colors.white} /> : <Fontisto name='twitch' size={20} color={theme.colors.white} style={{ marginRight: 1 }} />}
+            </SignInButtonIcon>
+            <SignInButtonText>
+              {isLoggingIn ? 'Entrando...' : 'Entrar com Twitch'}
+            </SignInButtonText>
+          </SignInButton>
         </LoginInfo>
       </Content>
 
-      <Modal 
+      <Modal
         animationType="fade"
         visible={isLoggingIn}
         statusBarTranslucent
